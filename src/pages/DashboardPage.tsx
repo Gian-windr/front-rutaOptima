@@ -11,6 +11,8 @@ export function DashboardPage() {
     pendingOrders: 0,
   });
   const [loading, setLoading] = useState(true);
+  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+  const [fecha] = useState<string>(today);
 
   useEffect(() => {
     loadStats();
@@ -18,13 +20,14 @@ export function DashboardPage() {
 
   const loadStats = async () => {
     try {
-      const [customers, orders, vehicles] = await Promise.all([
+      const [customers, orders, vehicles, pendingOrdersReq] = await Promise.all([
         customerService.getAll(),
         orderService.getAll(),
         vehicleService.getAll(),
+        orderService.getByDateRange(fecha),
       ]);
 
-      const pendingOrders = orders.data.filter((o) => o.estado === 'PENDIENTE').length;
+      const pendingOrders = pendingOrdersReq.data.filter((o) => o.estado === 'PENDIENTE').length;
 
       setStats({
         totalCustomers: customers.data.length,

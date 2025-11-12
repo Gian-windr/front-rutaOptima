@@ -32,8 +32,8 @@ export interface Order {
   volumen: number;
   peso: number;
   tiempoServicioEstimadoMin: number;
-  prioridad: 'NORMAL' | 'URGENTE' | 'BAJA';
-  estado: 'PENDIENTE' | 'ASIGNADO' | 'ENTREGADO' | 'CANCELADO';
+  prioridad: "NORMAL" | "URGENTE" | "BAJA";
+  estado: "PENDIENTE" | "ASIGNADO" | "ENTREGADO" | "CANCELADO";
   notas?: string;
 }
 
@@ -41,7 +41,7 @@ export interface Vehicle {
   id: number;
   nombre: string;
   patente: string;
-  tipo: 'FURGONETA_GRANDE' | 'FURGONETA_MEDIANA' | 'MOTO';
+  tipo: "FURGONETA_GRANDE" | "FURGONETA_MEDIANA" | "MOTO";
   capacidadCantidad: number;
   capacidadVolumen: number;
   capacidadPeso: number;
@@ -55,31 +55,31 @@ export interface Vehicle {
 }
 
 export interface RouteStop {
-  id: number;
+  customerId: number;
   orderId: number;
-  orderNombre?: string;
-  secuencia: number;
+  customerName?: string;
+  sequence: number;
   eta: string;
   etd: string;
-  distanciaKmDesdeAnterior: number;
-  tiempoViajeMinDesdeAnterior: number;
+  distanceKmFromPrev: number;
+  travelTimeMinFromPrev: number;
   cargaAcumuladaCantidad: number;
-  tiempoEsperaMin: number;
-  latitud?: number;
-  longitud?: number;
+  // tiempoEsperaMin: number;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface RoutePlan {
   id: number;
   fecha: string;
-  estado: 'BORRADOR' | 'CALCULADO' | 'APROBADO' | 'EN_EJECUCION' | 'COMPLETADO';
+  estado: "BORRADOR" | "CALCULADO" | "APROBADO" | "EN_EJECUCION" | "COMPLETADO";
   totalKilometros: number;
   totalMinutos: number;
   totalCosto: number;
   vehiculosUtilizados: number;
   ordenesAsignadas: number;
   ordenesNoAsignadas: number;
-  objetivo: 'MINIMIZE_DISTANCE' | 'MINIMIZE_TIME' | 'MINIMIZE_COST';
+  objetivo: "MINIMIZE_DISTANCE" | "MINIMIZE_TIME" | "MINIMIZE_COST";
   stops: RouteStop[];
 }
 
@@ -87,7 +87,7 @@ export interface OptimizeRouteRequest {
   fecha: string;
   orderIds: number[];
   vehicleIds: number[];
-  objetivo: 'MINIMIZE_DISTANCE' | 'MINIMIZE_TIME' | 'MINIMIZE_COST';
+  objetivo: "MINIMIZE_DISTANCE" | "MINIMIZE_TIME" | "MINIMIZE_COST";
   maxOptimizationTimeSeconds?: number;
 }
 

@@ -34,8 +34,8 @@ export function RouteMap({ stops, depotPosition = [-12.046374, -77.042793] }: Ro
   
   // Agregar todas las paradas
   stops.forEach((stop) => {
-    if (stop.latitud && stop.longitud) {
-      routePositions.push([stop.latitud, stop.longitud]);
+    if (stop.latitude && stop.longitude) {
+      routePositions.push([stop.latitude, stop.longitude]);
     }
   });
   
@@ -69,18 +69,18 @@ export function RouteMap({ stops, depotPosition = [-12.046374, -77.042793] }: Ro
 
       {/* Marcadores de las paradas */}
       {stops.map((stop) => {
-        if (!stop.latitud || !stop.longitud) return null;
+        if (!stop.latitude || !stop.longitude) return null;
         
         return (
           <Marker
-            key={stop.id}
-            position={[stop.latitud, stop.longitud]}
+            key={stop.orderId}
+            position={[stop.latitude, stop.longitude]}
             icon={defaultIcon}
           >
             <Popup>
               <div className="p-2">
-                <h3 className="font-semibold">Parada #{stop.secuencia}</h3>
-                <p className="text-sm">{stop.orderNombre}</p>
+                <h3 className="font-semibold">Parada #{stop.sequence}</h3>
+                <p className="text-sm">{stop.customerName}</p>
                 <p className="text-xs text-gray-600 mt-1">
                   ETA: {new Date(stop.eta).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })}
                 </p>
@@ -88,7 +88,7 @@ export function RouteMap({ stops, depotPosition = [-12.046374, -77.042793] }: Ro
                   ETD: {new Date(stop.etd).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })}
                 </p>
                 <p className="text-xs text-gray-600">
-                  Distancia: {stop.distanciaKmDesdeAnterior.toFixed(1)} km
+                  Distancia: {stop.distanceKmFromPrev.toFixed(1)} km
                 </p>
               </div>
             </Popup>
