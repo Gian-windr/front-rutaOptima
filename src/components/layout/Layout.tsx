@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { MapPin, LayoutDashboard, Route, LogOut } from 'lucide-react';
+import { MapPin, LayoutDashboard, Route, LogOut, Plus, FileText } from 'lucide-react';
 import { authService } from '../../services/authService';
 import { useStore } from '../../store/useStore';
 
@@ -22,12 +22,14 @@ export function Layout({ children }: LayoutProps) {
   const menuItems = [
     { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
     { path: '/optimize', icon: Route, label: 'Optimizar Rutas' },
+    { path: '/orders', icon: FileText, label: 'Órdenes' },
+    { path: '/orders/new', icon: Plus, label: 'Crear Orden', primary: true },
   ];
 
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-lg">
+      <aside className="w-64 bg-white shadow-lg relative">
         <div className="p-6 border-b">
           <div className="flex items-center space-x-2">
             <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center">
@@ -42,9 +44,24 @@ export function Layout({ children }: LayoutProps) {
 
         <nav className="p-4 space-y-2">
           {menuItems.map((item) => {
-            const Icon = item.icon;
+            const Icon = item.icon as any;
             const isActive = location.pathname === item.path;
-            
+
+            if (item.primary) {
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center justify-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                    isActive ? 'bg-primary-700 text-white' : 'bg-primary-600 text-white hover:bg-primary-700'
+                  }`}
+                >
+                  <Icon className="w-5 h-5" />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            }
+
             return (
               <Link
                 key={item.path}

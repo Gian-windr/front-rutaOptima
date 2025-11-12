@@ -113,14 +113,14 @@ export function DashboardPage() {
             <h3 className="font-semibold text-primary-700">Optimizar Rutas</h3>
             <p className="text-sm text-gray-600 mt-1">Crear un nuevo plan de rutas optimizado</p>
           </a>
-          <div className="block p-4 border-2 border-gray-200 rounded-lg bg-gray-50 opacity-60">
-            <h3 className="font-semibold text-gray-500">Ver Órdenes</h3>
+          <a href='/orders' className="block p-4 border-2 border-primary-500 rounded-lg hover:bg-primary-50 transition-colors">
+            <h3 className="font-semibold text-primary-700">Ver Órdenes</h3>
             <p className="text-sm text-gray-500 mt-1">Próximamente disponible</p>
-          </div>
-          <div className="block p-4 border-2 border-gray-200 rounded-lg bg-gray-50 opacity-60">
+          </a>
+          <a href='#' className="block p-4 border-2 border-gray-200 rounded-lg bg-gray-50 opacity-60">
             <h3 className="font-semibold text-gray-500">Ver Clientes</h3>
             <p className="text-sm text-gray-500 mt-1">Próximamente disponible</p>
-          </div>
+          </a>
         </div>
       </div>
     </div>

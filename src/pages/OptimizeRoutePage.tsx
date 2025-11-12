@@ -11,19 +11,23 @@ export function OptimizeRoutePage() {
   const [selectedVehicles, setSelectedVehicles] = useState<number[]>([]);
   const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]);
   const [objetivo, setObjetivo] = useState<'MINIMIZE_DISTANCE' | 'MINIMIZE_TIME' | 'MINIMIZE_COST'>('MINIMIZE_DISTANCE');
+  
   const [loading, setLoading] = useState(false);
   const [optimizing, setOptimizing] = useState(false);
   const [routePlan, setRoutePlan] = useState<RoutePlan | null>(null);
 
+  // Reload orders when fecha changes
   useEffect(() => {
     loadData();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fecha]);
 
   const loadData = async () => {
     setLoading(true);
     try {
       const [ordersRes, vehiclesRes] = await Promise.all([
-        orderService.getAll(),
+        // fetch orders for the selected date (no time range)
+        orderService.getByDateAndEstado(fecha),
         vehicleService.getActive(),
       ]);
       
@@ -49,14 +53,20 @@ export function OptimizeRoutePage() {
 
     setOptimizing(true);
     try {
-      const response = await routeService.optimize({
-        fecha,
-        orderIds: selectedOrders,
+      // Backend expects a LocalDate (YYYY-MM-DD). Send the date string directly
+      // instead of an ISO Instant (which includes time) to avoid Jackson parsing errors.
+      const fechaLocal = fecha; // e.g. '2025-11-12'
+
+      const payload = {
+        fecha: fechaLocal,
         vehicleIds: selectedVehicles,
-        objetivo,
+        objective: objetivo, // backend expects 'objective'
+        allowSoftTimeWindowViolations: false,
         maxOptimizationTimeSeconds: 20,
-      });
-      
+      } as const;
+
+      const response = await routeService.optimize(payload as any);
+
       setRoutePlan(response.data);
     } catch (error) {
       const err = error as { response?: { data?: { message?: string } } };
