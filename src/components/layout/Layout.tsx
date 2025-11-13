@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { MapPin, LayoutDashboard, Route, LogOut, Plus, FileText } from 'lucide-react';
+import { MapPin, LayoutDashboard, Route, LogOut, Plus, FileText, Map } from 'lucide-react';
 import { authService } from '../../services/authService';
 import { useStore } from '../../store/useStore';
 
@@ -22,6 +22,7 @@ export function Layout({ children }: LayoutProps) {
   const menuItems = [
     { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
     { path: '/optimize', icon: Route, label: 'Optimizar Rutas' },
+    { path: '/route-plans', icon: Map, label: 'Planes de Rutas' },
     { path: '/orders', icon: FileText, label: 'Órdenes' },
     { path: '/orders/new', icon: Plus, label: 'Crear Orden', primary: true },
   ];

@@ -4,6 +4,7 @@ import { Layout } from './components/layout/Layout';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { OptimizeRoutePage } from './pages/OptimizeRoutePage';
+import { RoutePlansPage } from './pages/RoutePlansPage';
 import CreateOrderPage from './pages/CreateOrderPage';
 import OrdersPage from './pages/OrdersPage';
 
@@ -24,6 +25,7 @@ function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
                 <Route path="/optimize" element={<ProtectedRoute><OptimizeRoutePage /></ProtectedRoute>} />
+                <Route path="/route-plans" element={<ProtectedRoute><RoutePlansPage /></ProtectedRoute>} />
                 <Route path="/orders/new" element={<ProtectedRoute><CreateOrderPage /></ProtectedRoute>} />
                 <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
                 <Route path="*" element={<Navigate to="/" replace />} />

@@ -55,39 +55,60 @@ export interface Vehicle {
 }
 
 export interface RouteStop {
-  customerId: number;
   orderId: number;
-  customerName?: string;
+  customerId: number;
+  customerName: string;
+  direccion: string;
   sequence: number;
   eta: string;
   etd: string;
+  latitude: number;
+  longitude: number;
   distanceKmFromPrev: number;
   travelTimeMinFromPrev: number;
+  waitTimeMin?: number;
   cargaAcumuladaCantidad: number;
-  // tiempoEsperaMin: number;
-  latitude?: number;
-  longitude?: number;
+  cargaAcumuladaVolumen: number;
+  cargaAcumuladaPeso: number;
+  cantidad: number;
+  volumen: number;
+  peso: number;
+  vehicleId: number;
+  vehiclePatente: string;
+}
+
+export interface RoutePlanMetrics {
+  totalKm: number;
+  totalTimeMin: number;
+  totalCost: number;
+  vehiculosUtilizados: number;
+  pedidosAsignados: number;
+  pedidosNoAsignados: number;
+}
+
+export interface VehicleRoute {
+  vehicleId: number;
+  vehicleName: string;
+  stops: RouteStop[];
+  totalKm: number;
+  totalTimeMin: number;
 }
 
 export interface RoutePlan {
   id: number;
-  fecha: string;
-  estado: "BORRADOR" | "CALCULADO" | "APROBADO" | "EN_EJECUCION" | "COMPLETADO";
-  totalKilometros: number;
-  totalMinutos: number;
-  totalCosto: number;
-  vehiculosUtilizados: number;
-  ordenesAsignadas: number;
-  ordenesNoAsignadas: number;
-  objetivo: "MINIMIZE_DISTANCE" | "MINIMIZE_TIME" | "MINIMIZE_COST";
+  status: "PENDING" | "OPTIMIZING" | "OPTIMIZED" | "FAILED";
+  metrics: RoutePlanMetrics;
+  vehicleRoutes: VehicleRoute[];
   stops: RouteStop[];
+  score?: string;
+  tiempoOptimizacionSeg?: number;
 }
 
 export interface OptimizeRouteRequest {
   fecha: string;
-  orderIds: number[];
   vehicleIds: number[];
-  objetivo: "MINIMIZE_DISTANCE" | "MINIMIZE_TIME" | "MINIMIZE_COST";
+  objective: "MINIMIZE_DISTANCE" | "MINIMIZE_TIME" | "MINIMIZE_COST";
+  allowSoftTimeWindowViolations?: boolean;
   maxOptimizationTimeSeconds?: number;
 }
 

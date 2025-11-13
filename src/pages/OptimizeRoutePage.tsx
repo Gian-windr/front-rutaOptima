@@ -231,27 +231,28 @@ export function OptimizeRoutePage() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                 <div>
                   <p className="text-sm text-gray-600">Distancia Total</p>
-                  <p className="text-xl font-bold text-gray-900">{routePlan.totalKilometros} km</p>
+                  <p className="text-xl font-bold text-gray-900">{routePlan.metrics.totalKm.toFixed(2)} km</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Tiempo Total</p>
-                  <p className="text-xl font-bold text-gray-900">{(routePlan.totalMinutos / 60)} hrs</p>
+                  <p className="text-xl font-bold text-gray-900">{(routePlan.metrics.totalTimeMin / 60).toFixed(1)} hrs</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Costo Total</p>
-                  <p className="text-xl font-bold text-gray-900">S/ {routePlan.totalCosto}</p>
+                  <p className="text-xl font-bold text-gray-900">S/ {routePlan.metrics.totalCost.toFixed(2)}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Órdenes Asignadas</p>
-                  <p className="text-xl font-bold text-gray-900">{routePlan.ordenesAsignadas}</p>
+                  <p className="text-xl font-bold text-gray-900">{routePlan.metrics.pedidosAsignados}</p>
                 </div>
               </div>
 
               <div className="space-y-2">
                 <h4 className="font-medium text-gray-700">Paradas:</h4>
                 {routePlan.stops.map((stop) => (
-                  <div key={stop.orderId} className="text-sm p-2 bg-gray-50 rounded">
-                    <span className="font-medium">#{stop.sequence}</span> - {stop.customerId}
+                  <div key={`${stop.vehicleId}-${stop.orderId}`} className="text-sm p-2 bg-gray-50 rounded">
+                    <span className="font-medium">#{stop.sequence}</span> - {stop.customerName}
+                    <span className="text-gray-600 ml-2">({stop.direccion})</span>
                     <span className="text-gray-600 ml-2">
                       ({new Date(stop.eta).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })})
                     </span>
