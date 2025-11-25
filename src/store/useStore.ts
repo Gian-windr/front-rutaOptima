@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Customer, Order, Vehicle, RoutePlan } from '../types/api.types';
+import type { Customer, Order, Vehicle, OptimizeRouteResponse } from '../types/api.types';
 
 interface AppState {
   // Auth
@@ -10,16 +10,12 @@ interface AppState {
   customers: Customer[];
   orders: Order[];
   vehicles: Vehicle[];
-  routePlans: RoutePlan[];
+  lastOptimization: OptimizeRouteResponse | null;
 
   setCustomers: (customers: Customer[]) => void;
   setOrders: (orders: Order[]) => void;
   setVehicles: (vehicles: Vehicle[]) => void;
-  setRoutePlans: (routePlans: RoutePlan[]) => void;
-
-  // Selected items
-  selectedRoutePlan: RoutePlan | null;
-  setSelectedRoutePlan: (plan: RoutePlan | null) => void;
+  setLastOptimization: (optimization: OptimizeRouteResponse | null) => void;
 
   // Loading
   isLoading: boolean;
@@ -33,15 +29,12 @@ export const useStore = create<AppState>((set) => ({
   customers: [],
   orders: [],
   vehicles: [],
-  routePlans: [],
+  lastOptimization: null,
 
   setCustomers: (customers) => set({ customers }),
   setOrders: (orders) => set({ orders }),
   setVehicles: (vehicles) => set({ vehicles }),
-  setRoutePlans: (routePlans) => set({ routePlans }),
-
-  selectedRoutePlan: null,
-  setSelectedRoutePlan: (plan) => set({ selectedRoutePlan: plan }),
+  setLastOptimization: (optimization) => set({ lastOptimization: optimization }),
 
   isLoading: false,
   setLoading: (value) => set({ isLoading: value }),

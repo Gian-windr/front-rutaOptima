@@ -6,6 +6,8 @@ import { DashboardPage } from './pages/DashboardPage';
 import { OptimizeRoutePage } from './pages/OptimizeRoutePage';
 import CreateOrderPage from './pages/CreateOrderPage';
 import OrdersPage from './pages/OrdersPage';
+import CustomersPage from './pages/CustomersPage';
+import VehiclesPage from './pages/VehiclesPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
     const isAuthenticated = useStore((state) => state.isAuthenticated);
@@ -21,6 +23,8 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
+                <Route path="/customers" element={<ProtectedRoute><CustomersPage /></ProtectedRoute>} />
+                <Route path="/vehicles" element={<ProtectedRoute><VehiclesPage /></ProtectedRoute>} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
                 <Route path="/optimize" element={<ProtectedRoute><OptimizeRoutePage /></ProtectedRoute>} />

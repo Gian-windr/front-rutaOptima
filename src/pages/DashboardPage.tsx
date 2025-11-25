@@ -24,10 +24,10 @@ export function DashboardPage() {
         customerService.getAll(),
         orderService.getAll(),
         vehicleService.getAll(),
-        orderService.getByDateRange(fecha),
+        orderService.getByDateAndEstado(fecha, 'PENDIENTE'),
       ]);
 
-      const pendingOrders = pendingOrdersReq.data.filter((o) => o.estado === 'PENDIENTE').length;
+      const pendingOrders = pendingOrdersReq.data.filter((o: { estado?: string }) => o.estado === 'PENDIENTE').length;
 
       setStats({
         totalCustomers: customers.data.length,

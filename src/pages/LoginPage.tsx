@@ -19,12 +19,27 @@ export function LoginPage() {
     setLoading(true);
 
     try {
-      await authService.login({ email, password });
+      console.log('🔑 LoginPage: Submitting credentials...', { email });
+      const result = await authService.login({ email, password });
+      console.log('✅ LoginPage: Login successful', result);
+      
       setAuthenticated(true);
       navigate('/');
-    } catch (err) {
-      const error = err as { response?: { data?: { message?: string } } };
-      setError(error.response?.data?.message || 'Credenciales inválidas');
+    } catch (err: any) {
+      console.error('❌ LoginPage: Login failed', err);
+      console.error('❌ Error details:', {
+        status: err.response?.status,
+        statusText: err.response?.statusText,
+        data: err.response?.data,
+        message: err.message
+      });
+      
+      const errorMessage = err.response?.data?.message || 
+                          err.response?.data?.error ||
+                          err.message ||
+                          `Error ${err.response?.status || 'desconocido'}: Credenciales inválidas`;
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

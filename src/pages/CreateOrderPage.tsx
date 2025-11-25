@@ -42,26 +42,66 @@ export default function CreateOrderPage() {
 
     setSubmitting(true);
     try {
-      const fechaIso = new Date(fechaEntrega).toISOString();
+      // Convertir fecha correctamente a ISO 8601
+      const fechaISO = new Date(fechaEntrega).toISOString();
 
       const payload = {
         customerId: Number(customerId),
-        fechaEntrega: fechaIso,
+        fechaEntrega: fechaISO,
         cantidad: Number(cantidad),
         volumen: volumen === '' ? 0 : Number(volumen),
         peso: peso === '' ? 0 : Number(peso),
-        tiempoServicioEstimadoMin: Number(tiempoServicioEstimadoMin),
+        tiempoServicioMinutos: Number(tiempoServicioEstimadoMin),
         prioridad: Number(prioridad),
-        notas: notas || undefined,
+        estado: 'PENDIENTE' as const
       };
 
-      console.log({payload})
-
-      await orderService.create(payload as any);
-      navigate('/');
+      console.log('📤 Creando orden con payload:', payload);
+      const response = await orderService.create(payload);
+      console.log('✅ Orden creada exitosamente:', response.data);
+      alert('¡Orden creada exitosamente!');
+      navigate(-1);
     } catch (err) {
-      console.error(err);
-      alert('Error al crear la orden');
+      console.error('❌ Error completo:', err);
+      const error = err as {
+        response?: {
+          data?: { message?: string; error?: string } | string;
+          status?: number;
+        };
+        message?: string;
+      };
+
+      let errorMsg = 'Error al crear la orden';
+
+      // Manejo de errores específicos del backend
+      if (error.response) {
+        console.log('📥 Respuesta del backend:', error.response);
+
+        if (typeof error.response.data === 'string') {
+          errorMsg = error.response.data;
+        } else if (error.response.data?.message) {
+          const msg = error.response.data.message;
+
+          // Mensajes específicos del backend
+          if (msg.includes('clientes nuevos')) {
+            errorMsg = 'Los clientes nuevos requieren mínimo 5 días de anticipación';
+          } else if (msg.includes('ventana horaria')) {
+            errorMsg = 'La fecha de entrega no coincide con la ventana horaria del cliente';
+          } else if (msg.includes('no existe')) {
+            errorMsg = 'El cliente seleccionado no existe';
+          } else {
+            errorMsg = msg;
+          }
+        } else if (error.response.data?.error) {
+          errorMsg = error.response.data.error;
+        } else {
+          errorMsg = `Error ${error.response.status}: ${JSON.stringify(error.response.data)}`;
+        }
+      } else if (error.message) {
+        errorMsg = error.message;
+      }
+
+      alert(errorMsg);
     } finally {
       setSubmitting(false);
     }

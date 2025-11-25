@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { MapPin, LayoutDashboard, Route, LogOut, Plus, FileText } from 'lucide-react';
+import { MapPin, LayoutDashboard, Route, LogOut, Plus, FileText, Users, Truck } from 'lucide-react';
 import { authService } from '../../services/authService';
 import { useStore } from '../../store/useStore';
 
@@ -23,6 +23,8 @@ export function Layout({ children }: LayoutProps) {
     { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
     { path: '/optimize', icon: Route, label: 'Optimizar Rutas' },
     { path: '/orders', icon: FileText, label: 'Órdenes' },
+    { path: '/customers', icon: Users, label: 'Clientes' },
+    { path: '/vehicles', icon: Truck, label: 'Vehículos' },
     { path: '/orders/new', icon: Plus, label: 'Crear Orden', primary: true },
   ];
 
@@ -44,7 +46,7 @@ export function Layout({ children }: LayoutProps) {
 
         <nav className="p-4 space-y-2">
           {menuItems.map((item) => {
-            const Icon = item.icon as any;
+            const Icon = item.icon as React.ComponentType<{ className?: string }>;
             const isActive = location.pathname === item.path;
 
             if (item.primary) {

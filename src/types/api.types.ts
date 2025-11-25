@@ -6,6 +6,7 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   token: string;
+  email: string;
 }
 
 export interface Customer {
@@ -14,10 +15,7 @@ export interface Customer {
   direccion: string;
   latitud: number;
   longitud: number;
-  esNuevo: boolean;
-  ventanaHorariaInicio?: string;
-  ventanaHorariaFin?: string;
-  demandaPromedioSemanal: number;
+  zona: 'Norte' | 'Sur' | 'Este' | 'Oeste' | 'Centro';
   telefono?: string;
   email?: string;
   activo: boolean;
@@ -27,68 +25,77 @@ export interface Order {
   id: number;
   customerId: number;
   customerNombre?: string;
-  fecha: string;
   cantidad: number;
   volumen: number;
   peso: number;
-  tiempoServicioEstimadoMin: number;
-  prioridad: "NORMAL" | "URGENTE" | "BAJA";
-  estado: "PENDIENTE" | "ASIGNADO" | "ENTREGADO" | "CANCELADO";
-  notas?: string;
+  fechaEntrega: string; // Formato ISO 8601, mínimo 3 días desde hoy
+  prioridad: number;
+  estado: 'PENDIENTE' | 'ASIGNADO' | 'ENTREGADO' | 'CANCELADO';
+  tiempoServicioMinutos: number;
 }
 
 export interface Vehicle {
   id: number;
   nombre: string;
   patente: string;
-  tipo: "FURGONETA_GRANDE" | "FURGONETA_MEDIANA" | "MOTO";
+  tipo: 'CAMION' | 'FURGONETA' | 'MOTO';
   capacidadCantidad: number;
   capacidadVolumen: number;
   capacidadPeso: number;
   velocidadKmh: number;
   costoKm: number;
-  activo: boolean;
+  conductor: string;
+  zona: 'Norte' | 'Sur' | 'Este' | 'Oeste' | 'Centro';
+  color: string; // Formato hexadecimal #RRGGBB
   depotLatitud: number;
   depotLongitud: number;
-  jornadaInicio: string;
-  jornadaFin: string;
+  jornadaInicio: string; // Formato HH:mm:ss
+  jornadaFin: string; // Formato HH:mm:ss
+  activo: boolean;
 }
 
 export interface RouteStop {
-  customerId: number;
-  orderId: number;
-  customerName?: string;
   sequence: number;
-  eta: string;
-  etd: string;
-  distanceKmFromPrev: number;
-  travelTimeMinFromPrev: number;
-  cargaAcumuladaCantidad: number;
-  // tiempoEsperaMin: number;
-  latitude?: number;
-  longitude?: number;
+  customerName: string;
+  latitude: number;
+  longitude: number;
+  eta: string; // ISO 8601 - Estimated Time of Arrival
+  etd: string; // ISO 8601 - Estimated Time of Departure
 }
 
-export interface RoutePlan {
-  id: number;
-  fecha: string;
-  estado: "BORRADOR" | "CALCULADO" | "APROBADO" | "EN_EJECUCION" | "COMPLETADO";
-  totalKilometros: number;
-  totalMinutos: number;
-  totalCosto: number;
+export interface OptimizationMetrics {
+  totalKm: number;
+  totalTimeMin: number;
+  totalCost: number;
   vehiculosUtilizados: number;
-  ordenesAsignadas: number;
-  ordenesNoAsignadas: number;
-  objetivo: "MINIMIZE_DISTANCE" | "MINIMIZE_TIME" | "MINIMIZE_COST";
+  pedidosAsignados: number;
+  pedidosNoAsignados: number;
+}
+
+export interface VehicleRoute {
+  vehicleId: number;
+  vehicleName: string;
+  conductor: string;
+  zona: string;
+  color: string; // Hexadecimal
+  totalKm: number;
+  totalTimeMin: number;
   stops: RouteStop[];
 }
 
+export interface OptimizeRouteResponse {
+  routePlanId?: number;
+  status?: 'OPTIMIZED' | 'FAILED' | 'PARTIAL';
+  score?: string;
+  tiempoOptimizacionSeg?: number;
+  metrics?: OptimizationMetrics;
+  vehicleRoutes: VehicleRoute[]; // Backend usa vehicleRoutes, no routes
+}
+
 export interface OptimizeRouteRequest {
-  fecha: string;
-  orderIds: number[];
+  fechaBase: string; // ISO 8601 datetime
   vehicleIds: number[];
-  objetivo: "MINIMIZE_DISTANCE" | "MINIMIZE_TIME" | "MINIMIZE_COST";
-  maxOptimizationTimeSeconds?: number;
+  orderIds?: number[]; // Opcional, backend lo ignora
 }
 
 export interface DashboardStats {

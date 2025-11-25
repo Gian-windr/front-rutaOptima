@@ -19,7 +19,7 @@ export default function OrdersPage() {
 
     setLoading(true);
     try {
-      const res = await orderService.getByDateRange(fecha, horaInicio || undefined, horaFin || undefined, estado || undefined);
+      const res = await orderService.getByDateAndEstado(fecha, estado || undefined);
       setOrders(res.data);
     } catch (err) {
       console.error('Error fetching orders:', err);
@@ -108,10 +108,10 @@ export default function OrdersPage() {
                   <tr key={o.id} className="border-t">
                     <td className="p-2 text-sm">{o.id}</td>
                     <td className="p-2 text-sm">{o.customerNombre ?? `#${o.customerId}`}</td>
-                    <td className="p-2 text-sm">{new Date(o.fecha).toLocaleString()}</td>
+                    <td className="p-2 text-sm">{o.fechaEntrega ? new Date(o.fechaEntrega).toLocaleString() : 'N/A'}</td>
                     <td className="p-2 text-sm">{o.cantidad}</td>
                     <td className="p-2 text-sm">{o.estado}</td>
-                    <td className="p-2 text-sm">{o.notas ?? '-'}</td>
+                    <td className="p-2 text-sm">-</td>
                   </tr>
                 ))}
               </tbody>
