@@ -3,3 +3,74 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Personalizar tooltips de Leaflet con tema oscuro */
+.custom-tooltip {
+  background-color: rgba(31, 41, 55, 0.95) !important;
+  border: 2px solid #3b82f6 !important;
+  border-radius: 8px !important;
+  padding: 6px 10px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important;
+  font-family: Arial, sans-serif !important;
+  color: white !important;
+}
+
+.custom-tooltip::before {
+  border-top-color: #3b82f6 !important;
+}
+
+/* Personalizar popups con tema oscuro */
+.leaflet-popup-content-wrapper {
+  background-color: rgba(31, 41, 55, 0.95) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6) !important;
+  border: 1px solid #374151 !important;
+  color: white !important;
+}
+
+.leaflet-popup-content {
+  margin: 15px !important;
+  line-height: 1.5 !important;
+  color: white !important;
+}
+
+.leaflet-popup-tip {
+  background-color: rgba(31, 41, 55, 0.95) !important;
+  border: 1px solid #374151 !important;
+}
+
+/* Mejorar contraste en los controles del mapa */
+.leaflet-control-zoom a {
+  background-color: rgba(31, 41, 55, 0.9) !important;
+  color: white !important;
+  border: 1px solid #374151 !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: rgba(55, 65, 81, 0.9) !important;
+}
+
+.leaflet-bar {
+  border: 1px solid #374151 !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important;
+}
+
+/* Scrollbar oscuro */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(31, 41, 55, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(75, 85, 99, 0.8);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(107, 114, 128, 0.9);
+}

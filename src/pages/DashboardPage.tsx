@@ -72,7 +72,7 @@ export function DashboardPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
       </div>
     );
   }
@@ -80,8 +80,8 @@ export function DashboardPage() {
   return (
     <div className="p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-600 mt-2">Resumen general del sistema</p>
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Dashboard</h1>
+        <p className="text-gray-400 mt-2">Resumen general del sistema</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -90,14 +90,14 @@ export function DashboardPage() {
           return (
             <div
               key={card.title}
-              className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
+              className="bg-gray-800/70 backdrop-blur-md rounded-xl shadow-2xl p-6 hover:shadow-3xl transition-all duration-200 border border-gray-700 transform hover:scale-[1.02]"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-600 text-sm font-medium">{card.title}</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-2">{card.value}</p>
+                  <p className="text-gray-400 text-sm font-medium">{card.title}</p>
+                  <p className="text-3xl font-bold text-white mt-2">{card.value}</p>
                 </div>
-                <div className={`${card.color} p-3 rounded-lg`}>
+                <div className={`${card.color} p-3 rounded-lg shadow-lg`}>
                   <Icon className="w-6 h-6 text-white" />
                 </div>
               </div>
@@ -106,23 +106,23 @@ export function DashboardPage() {
         })}
       </div>
 
-      <div className="mt-8 bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Acceso Rápido</h2>
+      <div className="mt-8 bg-gray-800/70 backdrop-blur-md rounded-xl shadow-2xl p-6 border border-gray-700">
+        <h2 className="text-xl font-semibold text-white mb-4">Acceso Rápido</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <a
             href="/optimize"
-            className="block p-4 border-2 border-primary-500 rounded-lg hover:bg-primary-50 transition-colors"
+            className="block p-4 border-2 border-blue-500 rounded-lg hover:bg-blue-900/30 transition-all duration-200 transform hover:scale-[1.02]"
           >
-            <h3 className="font-semibold text-primary-700">Optimizar Rutas</h3>
-            <p className="text-sm text-gray-600 mt-1">Crear un nuevo plan de rutas optimizado</p>
+            <h3 className="font-semibold text-blue-300">Optimizar Rutas</h3>
+            <p className="text-sm text-gray-400 mt-1">Crear un nuevo plan de rutas optimizado</p>
           </a>
-          <a href='/orders' className="block p-4 border-2 border-primary-500 rounded-lg hover:bg-primary-50 transition-colors">
-            <h3 className="font-semibold text-primary-700">Ver Órdenes</h3>
-            <p className="text-sm text-gray-500 mt-1">Próximamente disponible</p>
+          <a href='/orders' className="block p-4 border-2 border-purple-500 rounded-lg hover:bg-purple-900/30 transition-all duration-200 transform hover:scale-[1.02]">
+            <h3 className="font-semibold text-purple-300">Ver Órdenes</h3>
+            <p className="text-sm text-gray-400 mt-1">Visualizar las órdenes registradas</p>
           </a>
-          <a href='#' className="block p-4 border-2 border-gray-200 rounded-lg bg-gray-50 opacity-60">
-            <h3 className="font-semibold text-gray-500">Ver Clientes</h3>
-            <p className="text-sm text-gray-500 mt-1">Próximamente disponible</p>
+          <a href='/customers' className="block p-4 border-2 border-red-600 rounded-lg hover:bg-red-900/30 transition-all duration-200 transform hover:scale-[1.02]">
+            <h3 className="font-semibold text-red-400">Ver Clientes</h3>
+            <p className="text-sm text-gray-500 mt-1">Visualizar los clientes registrados</p>
           </a>
         </div>
       </div>

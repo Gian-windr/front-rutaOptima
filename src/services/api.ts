@@ -6,7 +6,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 30000 // 30 segundos
+  timeout: 120000 // 120 segundos (2 minutos) - OptaPlanner puede tardar más con muchas órdenes
 });
 
 // ⭐ CRUCIAL: Interceptor para añadir JWT
@@ -50,6 +50,14 @@ api.interceptors.response.use(
       localStorage.removeItem('token');
       localStorage.removeItem('email');
       window.location.href = '/login';
+    }
+
+    // Si es timeout (ECONNABORTED), dar mensaje específico
+    if (error.code === 'ECONNABORTED') {
+      return Promise.reject({ 
+        ...error, 
+        message: 'La optimización está tardando demasiado. Intenta con menos órdenes o vehículos, o contacta al administrador para revisar el rendimiento del servidor.' 
+      });
     }
 
     // Extraer mensaje de error del backend

@@ -44,5 +44,5 @@ export const vehicleService = {
 
 export const routeService = {
   optimize: (request: OptimizeRouteRequest) =>
-    api.post<OptimizeRouteResponse>(`${API_CONFIG.ENDPOINTS.ROUTE_PLANS}/mock/optimize`, request),
+    api.post<OptimizeRouteResponse>(`${API_CONFIG.ENDPOINTS.ROUTE_PLANS}/optimize`, request),
 };

@@ -54,18 +54,41 @@ export interface Vehicle {
   activo: boolean;
 }
 
+export interface RouteGeometry {
+  type: 'LineString';
+  coordinates: [number, number][]; // [longitude, latitude]
+}
+
 export interface RouteStop {
-  sequence: number;
+  orderId: number;
+  customerId: number;
   customerName: string;
+  direccion: string;
+  sequence: number;
+  eta: string; // ISO 8601
+  etd: string; // ISO 8601
   latitude: number;
   longitude: number;
-  eta: string; // ISO 8601 - Estimated Time of Arrival
-  etd: string; // ISO 8601 - Estimated Time of Departure
+  distanceKmFromPrev: number;
+  travelTimeMinFromPrev: number;
+  serviceTimeMin: number; // NUEVO: Tiempo de descarga/servicio
+  waitTimeMin?: number | null;
+  cargaAcumuladaCantidad?: number | null;
+  cargaAcumuladaVolumen?: number | null;
+  cargaAcumuladaPeso?: number | null;
+  cantidad: number;
+  volumen?: number | null;
+  peso?: number | null;
+  vehicleId?: number | null;
+  vehiclePatente?: string | null;
 }
 
 export interface OptimizationMetrics {
   totalKm: number;
   totalTimeMin: number;
+  totalTravelTimeMin: number; // NUEVO: Solo tiempo en carretera
+  totalServiceTimeMin: number; // NUEVO: Solo tiempo de servicio
+  totalWaitTimeMin: number; // NUEVO: Solo tiempo de espera
   totalCost: number;
   vehiculosUtilizados: number;
   pedidosAsignados: number;
@@ -78,24 +101,31 @@ export interface VehicleRoute {
   conductor: string;
   zona: string;
   color: string; // Hexadecimal
+  routeGeometry?: RouteGeometry; // NUEVO: Geometría de la ruta siguiendo calles
   totalKm: number;
   totalTimeMin: number;
+  totalTravelTimeMin?: number; // NUEVO: Solo tiempo en carretera
+  totalServiceTimeMin?: number; // NUEVO: Solo tiempo de servicio
+  totalWaitTimeMin?: number; // NUEVO: Solo tiempo de espera
+  returnToDepotKm?: number; // NUEVO: Distancia de regreso al depot
+  returnToDepotTimeMin?: number; // NUEVO: Tiempo de regreso al depot
   stops: RouteStop[];
 }
 
 export interface OptimizeRouteResponse {
   routePlanId?: number;
   status?: 'OPTIMIZED' | 'FAILED' | 'PARTIAL';
-  score?: string;
+  score: string; // Formato OptaPlanner: "0hard/-45280soft"
   tiempoOptimizacionSeg?: number;
   metrics?: OptimizationMetrics;
   vehicleRoutes: VehicleRoute[]; // Backend usa vehicleRoutes, no routes
 }
 
 export interface OptimizeRouteRequest {
-  fechaBase: string; // ISO 8601 datetime
+  fecha: string; // Formato: "YYYY-MM-DD"
   vehicleIds: number[];
-  orderIds?: number[]; // Opcional, backend lo ignora
+  orderIds?: number[]; // IDs de órdenes específicas a optimizar (opcional)
+  objective?: 'MINIMIZE_DISTANCE' | 'MINIMIZE_TIME'; // Opcional, default MINIMIZE_DISTANCE
 }
 
 export interface DashboardStats {
